@@ -67,6 +67,7 @@ top_15 <- joined_table %>%
   arrange(desc(mean_count)) %>%
   head(n = 15)
 
+
 # then we can use the `kable()` function to make a nicely formatted
 # markdown table
 top_15 %>%
@@ -119,6 +120,48 @@ joined_table %>%
 ```
 
 **Figure 2**: Here we show another example figure caption.
+
+```{r KRAS gene presence in diff ages, gender, and smoking status}
+# look at trend of smoking status w/ age and gender 
+joined_table %>%
+  filter(genename == "KRAS")%>%
+ggplot(aes(x = age_at_diagnosis,
+           y = counts_lengthscaledtpm,
+           color = gender,
+           shape = smoking_status)) +
+  geom_point() +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90,
+                         hjust = 1))
+```
+
+```{r}
+# EGFR and KRAS were found to be mutually exclusive in the literature
+# so I wanted to compare their expression in cancer tissue vs normal tissues
+top_2 <- joined_table %>%
+  filter(genename %in%
+  c("KRAS","EGFR"))
+  
+top_2 %>%
+  ggplot(aes(x = genename,
+             y = counts_lengthscaledtpm,
+             fill = normal_or_cancer))+
+  geom_col(position = position_dodge())
+```
+
+```{r}
+top_2 %>%
+   ggplot(aes(x = genename,
+             y = counts_lengthscaledtpm,
+             fill = smoking_status )) +
+   geom_boxplot() +
+    facet_wrap(~cancer_stage) +
+    xlab("Gene Name") +
+    ylab("Scaled read counts per gene") +
+    ggtitle("Read counts per gene by gender and cancer stage") 
+    theme_bw()
+```
+
 
 # Discussion
 
