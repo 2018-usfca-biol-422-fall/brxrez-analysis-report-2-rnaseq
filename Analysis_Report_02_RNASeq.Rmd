@@ -1,6 +1,6 @@
 ---
 title: "Analysis Report 2: Your Title Here"
-author: "Don Francisco"
+author: "Brian Rezende"
 date: "November 21, 2018"
 output: github_document
 bibliography: references.bib
@@ -135,7 +135,7 @@ ggplot(aes(x = age_at_diagnosis,
                          hjust = 1))
 ```
 
-```{r}
+```{r bargraph-of-EGFR-and-KRAS-presence-in-tissues}
 # EGFR and KRAS were found to be mutually exclusive in the literature
 # so I wanted to compare their expression in cancer tissue vs normal tissues
 top_2 <- joined_table %>%
@@ -149,17 +149,20 @@ top_2 %>%
   geom_col(position = position_dodge())
 ```
 
-```{r}
+```{r boxplot-of-mutually exclusive genes}
 top_2 %>%
-   ggplot(aes(x = genename,
+   ggplot(aes(x = smoking_status,
              y = counts_lengthscaledtpm,
-             fill = smoking_status )) +
+             fill = genename )) +
    geom_boxplot() +
     facet_wrap(~cancer_stage) +
-    xlab("Gene Name") +
+    xlab("Smoking Status") +
     ylab("Scaled read counts per gene") +
-    ggtitle("Read counts per gene by gender and cancer stage") 
+    ggtitle("Read counts of KRAS & EGRF by cancer stage and status") 
     theme_bw()
+```
+```{r}
+
 ```
 
 
