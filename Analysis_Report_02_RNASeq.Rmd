@@ -128,13 +128,18 @@ joined_table %>%
 ggplot(aes(x = age_at_diagnosis,
            y = counts_lengthscaledtpm,
            color = gender,
-           shape = smoking_status)) +
+           shape = smoking_status))+
   geom_point() +
+  xlab("Age at Diagnosis") +
+  ylab("Scaled read counts per gene") +
+  ggtitle("Read counts of KRAS in different ages")
   theme_bw() +
   theme(axis.text.x = element_text(angle = 90,
                          hjust = 1))
 ```
-
+**Figure 1:** Occurrence of the KRAS gene in male and female patients with 
+varying stages of cancer and ages of diagnosis. There is an increased distribu
+tion in ages ranging from 58-75. 
 ```{r bargraph-of-EGFR-and-KRAS-presence-in-tissues}
 # EGFR and KRAS were found to be mutually exclusive in the literature
 # so I wanted to compare their expression in cancer tissue vs normal tissues
@@ -146,9 +151,15 @@ top_2 %>%
   ggplot(aes(x = genename,
              y = counts_lengthscaledtpm,
              fill = normal_or_cancer))+
-  geom_col(position = position_dodge())
+  geom_col(position = position_dodge()) +
+  xlab("Gene Name") +
+  ylab("Scaled read counts per gene") +
+  ggtitle("KRAS & EGFR Tissue Analysis")
 ```
-
+**Figure 2:** Prevalence of mutually exlusive genes, EGFR and KRAS, in normal
+and cancer tissue samples. The prevalence was measured by the read counts per
+gene. It accounts for both sexes and all ages. KRAS greatly overshadows the 
+presence of EGFR in both cancer and normal tissue samples. 
 ```{r boxplot-of-mutually exclusive genes}
 top_2 %>%
    ggplot(aes(x = smoking_status,
@@ -161,10 +172,28 @@ top_2 %>%
     ggtitle("Read counts of KRAS & EGRF by cancer stage and status") 
     theme_bw()
 ```
-```{r}
+**Figure 3:** Smoking status compared to the read counts per gene of the two
+mutually exclusive genes. Each stage is taken into account to track development
+and increased prevalence. 
+```{r point-graph-of-KRAS-presence-in-cancer-stages}
+kras_subset <- joined_table %>%
+  filter(genename %in%
+  c("KRAS"))
+
+kras_subset %>%
+  ggplot(aes(x = cancer_stage,
+             y = age_at_diagnosis,
+             color = genename))+
+  geom_point()+
+  xlab("Cancer Stage") +
+  ylab("Age at Diagnosis") +
+  ggtitle("KRAS Presence in Cancer Stages and Ages")
 
 ```
-
+**Figure 4:** Inferred presence of KRAS in different ages of diagnosis and the
+corresponding cancer stages. Possible preventative treatments may also be 
+inferred. KRAS demonstrates an abundance in early stages and in older 
+populations. 
 
 # Discussion
 
