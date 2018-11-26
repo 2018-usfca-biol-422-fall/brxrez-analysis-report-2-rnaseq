@@ -76,8 +76,7 @@ ggplot(aes(x = age_at_diagnosis,
                          hjust = 1))
 ```
 **Figure 1:** Occurrence of the KRAS gene in male and female patients with 
-varying stages of cancer and ages of diagnosis. There is an increased distribu
-tion in ages ranging from 58-75. 
+varying stages of cancer and ages of diagnosis. There is an increased distribution in ages ranging from 58-75. 
 
 ```{r bargraph-of-EGFR-and-KRAS-presence-in-tissues}
 # EGFR and KRAS were found to be mutually exclusive in the literature
@@ -95,7 +94,7 @@ top_2 %>%
   ylab("Scaled read counts per gene") +
   ggtitle("KRAS & EGFR Tissue Analysis")
 ```
-**Figure 2:** Prevalence of mutually exlusive genes, EGFR and KRAS, in normal
+**Figure 2:** Prevalence of mutually exclusive genes, EGFR and KRAS, in normal
 and cancer tissue samples. The prevalence was measured by the read counts per
 gene. It accounts for both sexes and all ages. KRAS greatly overshadows the 
 presence of EGFR in both cancer and normal tissue samples. 
