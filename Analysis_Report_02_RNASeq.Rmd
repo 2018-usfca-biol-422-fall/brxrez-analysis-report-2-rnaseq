@@ -1,31 +1,32 @@
 ---
-title: "Analysis Report 2: Your Title Here"
-author: "Don Francisco"
-date: "November 21, 2018"
+title: "Analysis Report 2: KRAS & EGFR in Lung Cancer and The Effects of Diet"
+author: "Brian Rezende"
+date: "November 26, 2018"
 output: github_document
 bibliography: references.bib
 csl: bioinformatics.csl
 ---
 
-*Overall, a single-spaced page is about 500 words. So if the guidelines say half of a page, think about writing around 250 words. You can use the wordcountaddin in RStudio to track your progress.*
-
 # Introduction
 
-Add about 1 page here. Must cite at least 5 peer reviewed articles.
+Some of the most key characteristics of cancer include aberrant gene function and altered patterns of gene expression. These features may become manipulated due to exposure to chemicals, pathogens, or radiation, which compromises our healthy cells. In specific, gene expression is especially important in chromatin as it orchestrates key biological processes such as differentiation [@jones2007]. Chromatin is the loose form of genetic material that composes the normal state of DNA, RNA, and proteins found in the nucleus of cells. When chromatin function becomes dysregulated, it can result in the formation of cancer. One of the most lethal cancers today is lung cancer. Lung carcinoma is the leading cause of cancer deaths in the United States and worldwide for both men and women [@paez2004]. Specifically, non-small cell lung cancer (NSCLC) is the most common type of lung cancer which accounts for about 85 % of lung cancer cases in the USA [@li2015rna]. This high prevalence of disease makes lung cancer interesting to study as the levels of severity ranges in ages and smoking status. Cigarette smoking perpetuates levels of lung cancer and is one of the main drivers in cause of death. Other risk factors for lung cancer include environmental tobacco smoke, previous lung disease, occupational exposures, and genetic susceptibility [@ziegler1996]. According to the CDC, smoking causes more deaths each year than HIV, alcohol use, drug use, and motor vehicle injuries, combined. Moreover, in lung cancer, a development of abnormal cells is observed. As these cells grow uncontrolled they lead to the formation of tumors which then interfere with the functioning of the lung. The American Cancer Society outlines 5 different stages of lung cancer, each with subcategories that depend on the size of the tumor, proximity to the lymph nodes, and metastasis. Two mutually exclusive genes, *KRAS* and *EGFR*, are found in lung cancer as missense mutations occur in codons 12 and 13 of exon 1. In most cases it was reported that *KRAS* mutations were also found in *EGFR* wild-type tumors [@el-telbany2012]. Moreover, *KRAS* mutations are found in ∼25% of lung adenocarcinomas in Western countries and, as a group, have been strongly associated with cigarette smoking [@riely2008]. On the other hand, *EGFR* gene copy number has also been intensely investigated in regards to its expression in lung cancer. It was found to be increased in 30% to 50% of NSCLC patients, which is similar to the *KRAS* gene. Other studies reported that these earlier findings were confounded by the fact that a high *EGFR* copy number can significantly co-exist with *EGFR* mutations [@el-telbany2012]. The mutations found in *EGFR* mutations that exist in NSCLC were predominantly somatic while a few were found to be germline in nature. Mutations in exons 18 to 21 within the tyrosine kinase domain were the most heavily sequenced region and are considered to be mutational hot spots [@el-telbany2012]. Given the influence of *KRAS* and *EGFR* within lung cancer I will examine their expression in attempt to establish the most optimal timing for intervention and possible directions for treatment. 
 
 # Methods
 
 ## Sample origin and sequencing
 
-Add about half a page here. In this section instead of first person (I/we), use Li et al. [@li2015rna] and Seo et al. [@seo2012transcriptional], since you'll just be describing what they did, based on the methods in their paper(s). It's important to include this so the reader knows what the study design was for the data you will be presenting.
+All the cancer and adjacent paired-normal tissue specimens used in this study were acquired from surgical specimens. Cancer and normal tissue specimens were grossly dissected and preserved immediately in liquid nitrogen after surgery. For RNA-seq, Seo and colleagues extracted RNA from tissue, followed by purification. Extracted RNA was assessed for quality and was quantified using an RNA 6000 Nano LabChip on a 2100 Bioanalyzer [@seo2012transcriptional]. They then extracted genomic DNA from normal lungs, sheared it, and then constructed a paired-end sequencing library. A series of screening tests were done to identify well known driver mutations, followed by collecting smoking history, sequencing analysis, and somatic single nucleotide discovery. Their sequencing analysis aligned RNA and exome reads to the NCBI human reference genome assembly using GSNAP while capping the level of mismatches to 5% [@seo2012transcriptional]. Moreover, the RNA sequencing reads were aligned to a cDNA set consisting of 161,250 mRNA sequences that were obtained from public databases to ensure less false positives and false negatives.
+Similarly, *Li et all* received their transcriptome sequencing data from Gene Expression Omnibus. They obtained data from paired normal and tumor tissues from 34 non-smoking and 34 smoking patients with lung adenocarcinoma. From this they identified 2,273 genes that showed differential expression in nonsmoker tumor versus normal tissue and 3,030 genes in the smoking group. They drew their data from the Seo study done in Korea in 2012 that identified somatic mutations and transcriptional variations related to lung cancer. Through hierarchical clustering their data also identified cancer-up, cancer-down, and mixed regulated genes for each patient (non-smoker and smoker). In addition, they downloaded an independent RNA-seq data to validate the genes found in the non-smoker group, which included data on six non-smoker patients [@li2015rna]. 
+The samples Li and contributors used for their analyses were genes identified in only nonsmoker patients, genes in only smoker patients, and genes identified in both groups but with greater fold change in non smoker patients, genes in both but with greater fold change in smoker patients. Using this they were able to conduct a genome-wide transcriptome analysis in smoker and non-smoker patients with lung cancer. The study design was closely related to the study by Seo, but Li took it a step further and used a pair-wise comparison between tumor and normal tissues in smoker and nonsmoker patients. In the end some of their results were able to support the findings from Seo’s study.
+
 
 ## Computational
 
-These are the methods that were used to process the sequencing data. Should probably be at least a half of a page. At a very minimum should include citations for biomartr, trimmomatic, and sailfish. Note that these three methods references don't count towards the five references you need to cite in the introduction.
+Utilizing the compressed binary file extracted from *Li et al’s* study we converted the dataset into a table that contained 6.2 million rows. This data set allowed me to look at the different genes that were found in both male and female smokers and non smokers. Other pertinent information included cancer stage, age at diagnosis, smoking status, and the type of tissue that the sample was taken from. In this report I downloaded the RNASeq data and executed a script coupled with BiomarkR to download different types of files that I mapped onto from the NCBI database. Then, I utilized fastq dump to convert the files from their proprietary form to fastq files. Following this conversion, Sailfish was implemented to quantify the abundance of previously annotated RNA isoforms from RNA-Seq data. This computational method avoids mapping reads and produces quasi alignments about 20 times faster than traditional methods without loss of accuracy [@patro2014]. Sailfish allowed for efficient processing of sequencing reads. Since NGS data often come in the form of paired-end reads, I trimmed and filtered the data by identifying adapter sequences and cut the reads to retain the 5’ portion while discarding the sequence on the 3’ end of the cut point [@bolger2014]. A for loop using Trimmomatic paired end allows for commands to be parallelized and run on each file for trimming and filtering. Trimmomatic finds an approximate match between the reads and technical sequence and has the ability to work on all technical sequences such as adapters, PCR primers, and fragments. Detection occurs throughout the reads, but requires a substantial minimum overlap between the read and technical sequence to prevent false-positive findings [@bolger2014]. Though this method allows for notable trimming and filtering, short partial adapter sequences that occur at the ends of reads are unable to meet the minimum overlap requirement and are unable to be detected. Lastly, when working with a large dataset such as this one, Biomartr was utilized to query the dataset. Before beginning analysis using R Studio, Biomartr annotated identifiers such as gene symbol and chromosomal coordinates. This function is important as it enables direct access from Bioconductor to BioMart databases and creates a strong alliance for data analysis with biological databases [@durinck2005]. The Biomartr package integrates large, public, or locally installed Biomart databases and permits retrieval of genomic sequences and single nucleotide polymorphism information, which was then used in data analysis [@durinck2005]. 
 
 # Results
 
-In addition to a minimum of 4-5 figures/tables (and associated captions), you should include sufficient text in this section to describe what your findings were. Remember that in the results section you just describe what you found, but you don't interpret it - that happens in the discussion.
+Analysis of tumor and normal lung tissue samples was done on 34 never smokers and 34 smokers. A common set of genes were affected in tumorigenesis of lung adenocarcinoma in both nonsmoker and smoker patients, yet they are more noticeably affected in smoking patients as shown in **Figure 1**. Current and previous smokers demonstrate higher expression of *KRAS*, predominantly in male patients. The greatest distribution of *KRAS* expression in patients with a history of smoking occurred in the age range of 58-75, which also revealed greater read counts. In comparison to *EGFR*, there is an increased presence of *KRAS* in normal and tumor tissue samples. The fold change in *KRAS* in **Figure 2** shows a comparison between tumor tissue and normal tissue and signals an upregulation in tumor samples. Interestingly, I observed an increased number of outliers in stage 1a, 1b, and 3b within each smoking status category. Most notably, the highest read counts of *KRAS* originate from the early stages of lung adenocarcinoma seen in **Figure 3**, which Figure 4 also supports. 
 
 ```{r load-libraries, message = FALSE, echo = FALSE}
 # Be sure to install these packages before running this script
@@ -46,7 +47,7 @@ library("magrittr")
 library("citr")
 ```
 
-```{r load-data, message = FALSE, echo = FALSE}
+```{r load-data, echo=FALSE, message=TRUE, warning=TRUE, paged.print=TRUE}
 # load the dataset from a compressed binary file
 # it gets loaded as an object called "joined_table"
 # this has 6.2 million rows...so you will need to be thoughtful about
@@ -57,71 +58,89 @@ load("output/final_compiled_counts/joined_count_data.RData")
 stopifnot(exists("joined_table"))
 ```
 
-```{r make-summary-table, echo = FALSE}
-# There are many many genes in this dataset, so we can
-# subset it down to just a few here to look for interesting patterns
-# in the most highly expressed
-top_15 <- joined_table %>%
-  group_by(gender, genename) %>%
-  summarize(mean_count = mean(counts_lengthscaledtpm)) %>%
-  arrange(desc(mean_count)) %>%
-  head(n = 15)
 
-# then we can use the `kable()` function to make a nicely formatted
-# markdown table
-top_15 %>%
-  kable()
-```
-
-**Table 1**: The most highly expressed genes in both genders included *SFTPB* and *EEF1A1*.
-
-```{r make-barplot-of-highly-expressed-genes, echo = FALSE}
-# this code uses the same data as above, but use it to make a
-# barplot - remember geom_col() is just like
-# when you use geom_bar(stat = "identity")
-top_15 %>%
-  ggplot(aes(x = genename,
-             y = mean_count,
-             fill = gender)) +
-    geom_col(position = "dodge")
-```
-
-**Figure 1**: Here we show an example figure caption.
-
-```{r make-boxplot-of-highly-expressed-genes, echo = FALSE}
-# here we just want to pull out the unique gene names and turn
-# them into a vector so we can use it below to make a boxplot
-# we use the pull() funtion to get this as a vector, just like
-# we did when making histograms several weeks ago
-top_genes <- top_15 %>%
-  ungroup() %>%
-  select(genename) %>%
-  unique() %>%
-  pull()
-
-# now we need to filter from the full data set again, because
-# we don't just want summary data, we want all the data in
-# order to make boxplots
+```{r KRAS gene presence in diff ages, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+# look at trend of smoking status w/ age and gender 
 joined_table %>%
-  filter(genename %in% top_genes) %>%
-  ggplot(aes(x = genename,
-             y = counts_lengthscaledtpm,
-             fill = gender)) +
-    geom_boxplot() +
-    facet_wrap(~cancer_stage) +
-    xlab("Gene Name") +
-    ylab("Scaled read counts per gene") +
-    ggtitle("Read counts per gene by gender and cancer stage") +
-    theme_bw() + # simplifies theme
-    theme(axis.text.x = # rotates x axis labels vertically
-            element_text(angle = 90,
+  filter(genename == "KRAS") %>%
+ggplot(aes(x = age_at_diagnosis,
+           y = counts_lengthscaledtpm,
+           color = gender,
+           shape = smoking_status)) +
+  geom_point() +
+  xlab("Age at Diagnosis") +
+  ylab("Scaled read counts per gene") +
+  ggtitle("Read counts of KRAS in different ages") +
+  theme_bw() +
+  theme(axis.text.x = element_text(angle = 90,
                          hjust = 1))
 ```
 
-**Figure 2**: Here we show another example figure caption.
+**Figure 1:** Occurrence of the *KRAS* gene in male and female patients with 
+varying stages of cancer and ages of diagnosis. There is an increased distribution in ages ranging from 58-75. 
+
+```{r bargraph-of-EGFR-and-KRAS-presence-in-tissues, echo=FALSE, message=TRUE, warning=FALSE, paged.print=FALSE}
+# EGFR and KRAS were found to be mutually exclusive in the literature
+# so I wanted to compare their expression in cancer tissue vs normal tissues
+top_2 <- joined_table %>%
+  filter(genename %in%
+  c("KRAS", "EGFR"))
+  
+top_2 %>%
+  ggplot(aes(x = genename,
+             y = counts_lengthscaledtpm,
+             fill = normal_or_cancer)) +
+  geom_col(position = position_dodge()) +
+  xlab("Gene Name") +
+  ylab("Scaled read counts per gene") +
+  ggtitle("KRAS & EGFR Tissue Analysis")
+```
+
+**Figure 2:** Prevalence of mutually exclusive genes, *EGFR* and *KRAS*, in normal
+and cancer tissue samples. The prevalence was measured by the read counts per
+gene. It accounts for both sexes and all ages. *KRAS* greatly overshadows the 
+presence of *EGFR* in both cancer and normal tissue samples. 
+
+```{r boxplot-of-mutually exclusive genes, echo=FALSE, message=FALSE, warning=FALSE, paged.print=FALSE}
+top_2 %>%
+   ggplot(aes(x = smoking_status,
+             y = counts_lengthscaledtpm,
+             fill = genename)) +
+   geom_boxplot() +
+    facet_wrap(~cancer_stage) +
+    xlab("Smoking Status") +
+    ylab("Scaled read counts per gene") +
+    ggtitle("Read counts of KRAS & EGRF by cancer stage and status") +
+    theme_bw()
+```
+
+**Figure 3:** Smoking status compared to the read counts per gene of the two
+mutually exclusive genes. Each stage is taken into account to track development
+and increased prevalence. 
+
+```{r point-graph-of-KRAS-presence-in-cancer-stages, echo=FALSE, message=TRUE, warning=FALSE, paged.print=FALSE}
+kras_subset <- joined_table %>%
+  filter(genename %in%
+  c("KRAS"))
+
+kras_subset %>%
+  ggplot(aes(x = cancer_stage,
+             y = age_at_diagnosis,
+             color = genename)) +
+  geom_point() +
+  xlab("Cancer Stage") +
+  ylab("Age at Diagnosis") +
+  ggtitle("KRAS Presence in Cancer Stages and Ages")
+```
+
+**Figure 4:** Inferred presence of *KRAS* in different ages of diagnosis and the
+corresponding cancer stages. Possible preventative treatments may also be 
+inferred. *KRAS* demonstrates an abundance in early stages and in older 
+populations. 
 
 # Discussion
 
-Add around 1-2 pages interpreting your results and considering future directions one might take in analyzing these data.
+Though in most cases *KRAS* mutations were found in *EGFR* wild-type tumors, our findings (Figure 2) demonstrate the opposite as *KRAS* has a significant fold increase over EGFR in tumor tissue samples. Our findings confirm that within *KRAS* mutations, there is a decrease in EGFR mutations. Since patients demonstrate stronger expression within the earlier stages of lung cancer, intervention is suggested as soon as a diagnosis is made in order to combat the disease from worsening. *KRAS* demonstrates a distinct profile within their mutations, which contributes to their increased prevalence in lung cancer, particularly in previous smokers and never smokers. Interestingly, never smokers were significantly more likely than former or current smokers to have a transition mutation (G→A) rather than the transversion mutations known to be smoking-related (G→T or G→C) [@riely2008]. The etiology of G→T transversions in tumors from patients with lung cancer is thought to be related to exposure to polycyclic aromatic hydrocarbons found in cigarette smoke. Moreover, studies show that *EGFR* is more abundantly expressed in lung carcinoma tissue that in adjacent normal lung [@paez2004] (Figure 2). 
+The *EGFR* mutational status seems also to vary between the primary lung tumor and the corresponding metastases. Often, the *EGFR* mutations can be seen present in the primary lung tumor but appear to be absent in the metastases [@el-telbany2012]. This disappearance in expression promotes a better window for treatment, since mutations are seen to occur more often in the early stages as opposed to later ones (Figure 3). Through these findings we may also confirm that *KRAS* and *EGFR* are mutually exclusive genes. In terms of treatment, there are different avenues of combating lung cancer. Observational studies of diet and lung cancer strongly suggest that increased vegetable and fruit intake is associated with reduced risk in all histologic types of lung cancer in men and women smokers, ex-smokers, and never smokers, with a countrywide impact. With this alteration in diet, blood beta carotene levels are elevated and are the best available biomarker of vegetable and fruit intake [@ziegler1996]. This is useful as low levels of beta carotene levels are predictive of increased lung cancer incidence. Aside from simply suggesting quitting cigarettes, it has been found that milk and carrots aid in increased vitamin A intake coupled with protective carotenoids. Green leafy vegetables and green or yellow vegetables that are rich in carotenoids are also found to significantly reduce lung cancer risk [@ziegler1996]. Chemotherapy for non–small cell lung carcinoma (NSCLC), which accounts for approximately 85% of lung cancer cases, remains marginally effective. Other treatment methods include targeted small molecule drugs such as Gefitinib. Gefitinib is an *EGFR* kinase inhibitor, which causes tumor regression in some patients with NSCLC [@paez2004]. Patients that respond to Gefitinib therapy are found to harbor *EGFR* kinase domain mutations, which highlights that the profile of *EGFR* genes are associated with resistance to gefitinib. Thus, this drug should be administered to younger patients who are in the early stages of lung cancer. It should be widely known that alterations in diet can aid in lowering cancer risk and patients who suffer from cancer already should switch to a stricter diet to promote longer prognosis. Overall, these findings are important as they can further influence therapeutics for treating current and future lung cancer patients, while expanding on the mechanisms of *KRAS* mutations.
 
 # Sources Cited
